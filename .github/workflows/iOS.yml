@@ -34,7 +34,7 @@ jobs:
         run: dotnet restore src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj -c Release -f net6.0-ios --no-restore
+        run: dotnet build src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj -c Release -f net6.0-ios -p:PublishTrimmed=false --no-restore
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v2.3.1
