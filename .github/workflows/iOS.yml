@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           name: ios-ci-build
-          path: src/FormulaGenerator.MAUI/bin/Release/net6.0-ios/**/*.ipa/
+          path: src/FormulaGenerator.MAUI/bin/Release/net6.0-ios/**/*.app/
