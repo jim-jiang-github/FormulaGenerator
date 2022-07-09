@@ -52,5 +52,9 @@
 	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.403" />
 	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.403" />
 	</ItemGroup>
+	
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+	</PropertyGroup>
 
 </Project>

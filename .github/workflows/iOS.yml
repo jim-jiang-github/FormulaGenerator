@@ -13,11 +13,11 @@ env:
 
 jobs:
   build-mac:
-    runs-on: macos-lastest
+    runs-on: macos-12
     name: iOS Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
