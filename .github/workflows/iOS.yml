@@ -10,7 +10,6 @@ on:
 
 env:
     DOTNETVERSION: 6.0.x
-    BUILDTYPE: Release
 
 jobs:
   build-mac:
@@ -24,6 +23,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{env.DOTNETVERSION}}
+          include-prerelease: true
 
       - name: Install MAUI Workloads
         run: |
@@ -34,10 +34,10 @@ jobs:
         run: dotnet restore src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj -c ${{env.BUILDTYPE}} -f net6.0-ios
+        run: dotnet build src/FormulaGenerator.MAUI/FormulaGenerator.MAUI.csproj -c Release -f net6.0-ios --no-restore
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: macos-ci-build
-          path: src/FormulaGenerator.MAUI/bin/${{env.BUILDTYPE}}/net6.0-ios/**/*.app/
+          name: ios-ci-build
+          path: src/FormulaGenerator.MAUI/bin/Release/net6.0-ios/**/*.app/
