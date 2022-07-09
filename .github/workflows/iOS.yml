@@ -13,7 +13,7 @@ env:
 
 jobs:
   build-mac:
-    runs-on: macos-12
+    runs-on: macos-lastest
     name: iOS Build
     steps:
       - name: Checkout
