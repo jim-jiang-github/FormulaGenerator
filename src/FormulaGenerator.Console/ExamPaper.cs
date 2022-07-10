@@ -9,7 +9,7 @@ namespace FormulaGenerator.Console
 {
     internal class ExamPaper
     {
-        public void SaveToImage(string path)
+        public void SaveToImage(string path, bool isShowAnswer = true)
         {
             Font fontTitle = new("宋体", 24, FontStyle.Bold);
             Font fontText = new("宋体", 12);
@@ -70,10 +70,13 @@ namespace FormulaGenerator.Console
                 graphics.DrawString($"{string.Join("", Enumerable.Range(0, 2 - (i + 1).ToString().Length).Select(i => ' '))}{i + 1}: {detachableCalculations[i]} =", fontText, Brushes.Black, x * (a4.Width / 2 - 50), 1150 + y * 280);
             }
 
-            var answer1 = string.Join(",", oralCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
-            var answer2 = string.Join(",", verticalCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
-            var answer3 = string.Join(",", detachableCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
-            graphics.DrawString($"({answer1}) ({answer2}) ({answer3})", fontText, Brushes.Black, 50, a4.Height - 40);
+            if (isShowAnswer)
+            {
+                var answer1 = string.Join(",", oralCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
+                var answer2 = string.Join(",", verticalCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
+                var answer3 = string.Join(",", detachableCalculations.Select(x => x.FormulaResult.ToString().Replace(".", "-")));
+                graphics.DrawString($"({answer1}) ({answer2}) ({answer3})", fontText, Brushes.Black, 50, a4.Height - 40);
+            }
             a4.Save(path);
         }
     }
