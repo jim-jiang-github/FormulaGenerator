@@ -34,6 +34,7 @@ namespace FormulaGenerator
         public static Formula Multiplied1 => (Formula)Random_NN0 * (Formula)Random_3_10;
         public static Formula Multiplied2 => (Formula)Random_N0N * (Formula)Random_3_10;
         public static Formula SimpleMultiplied => (Formula)Random_3_10 * (Formula)Random_3_10;
+        public static Formula SimpleMultiplied1 => (Formula)Random_30_100 * (Formula)Random_3_10;
         public static Formula Divided => (Formula)Random_50_100 / (Formula)Random_3_10;
         public static Formula SimpleDivided => (Formula)Random_3_10 / (Formula)Random_3_10;
         public static Formula SimpleRandomMathSymbol(Formula formula1, Formula formula2)
@@ -53,7 +54,7 @@ namespace FormulaGenerator
         public Formula? Formula1 { get; }
         public MathSymbol? Symbol { get; }
         public Formula? Formula2 { get; }
-        public int FormulaResult
+        public float FormulaResult
         {
             get
             {
@@ -61,12 +62,19 @@ namespace FormulaGenerator
                 {
                     return Value;
                 }
+                if (Symbol == MathSymbol.Divided)
+                {
+                    var r1 = Formula1.FormulaResult;
+                    var r2 = Formula2.FormulaResult;
+                    var value = (int)(r1 / r2);
+                    var remainder = (int)r1 - value * (int)r2;
+                    return value + (float)remainder / 10;
+                }
                 return Symbol switch
                 {
                     MathSymbol.Plus => Formula1.FormulaResult + Formula2.FormulaResult,
                     MathSymbol.Minus => Formula1.FormulaResult - Formula2.FormulaResult,
                     MathSymbol.Multiplied => Formula1.FormulaResult * Formula2.FormulaResult,
-                    MathSymbol.Divided => Formula1.FormulaResult / Formula2.FormulaResult,
                     _ => Value,
                 };
             }
@@ -125,7 +133,7 @@ namespace FormulaGenerator
             };
         }
 
-        public static explicit operator int(Formula fcormula)
+        public static explicit operator float(Formula fcormula)
         {
             return fcormula.FormulaResult;
         }
@@ -149,7 +157,7 @@ namespace FormulaGenerator
         }
         public static Formula operator /(Formula formula1, Formula formula2)
         {
-            return new Formula((Formula)((int)formula1 * (int)formula2), MathSymbol.Divided, formula2);
+            return new Formula((Formula)((int)formula1 * (int)formula2 + Random_0_10), MathSymbol.Divided, formula2);
         }
     }
 }
