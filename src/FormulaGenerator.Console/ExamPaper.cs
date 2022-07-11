@@ -67,7 +67,7 @@ namespace FormulaGenerator.Console
             {
                 int x = i % 2;
                 int y = i / 2;
-                graphics.DrawString($"{string.Join("", Enumerable.Range(0, 2 - (i + 1).ToString().Length).Select(i => ' '))}{i + 1}: {detachableCalculations[i]} =", fontText, Brushes.Black, x * (a4.Width / 2 - 50), 1150 + y * 280);
+                graphics.DrawString($"{string.Join("", Enumerable.Range(0, 2 - (i + 1).ToString().Length).Select(i => ' '))}{i + 1}: {detachableCalculations[i]}", fontText, Brushes.Black, x * (a4.Width / 2 - 50), 1150 + y * 280);
             }
 
             if (isShowAnswer)
