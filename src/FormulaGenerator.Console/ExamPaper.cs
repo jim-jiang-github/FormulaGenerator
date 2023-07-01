@@ -24,7 +24,7 @@ namespace FormulaGenerator.Console
 
             graphics.DrawString("一· 口算：", fontTitle, Brushes.Black, 0, 20);
 
-            //Formula[] oralCalculations = Enumerable.Range(0, 60).Select(x => Formula.EasyMultipliedNNN).ToArray();
+            //Formula[] oralCalculations = Enumerable.Range(0, 60).Select(x => Formula.EasyDivided).ToArray();
             Formula[] oralCalculations = new Formula[] {
                 Formula.PlusDot99,
                 Formula.MinusDot99,
@@ -88,7 +88,8 @@ namespace FormulaGenerator.Console
                 Formula.EasyMinusNNN,
                 Formula.EasyMultipliedNNN,
                 Formula.EasyMultipliedNNNN,
-                Formula.EasyMultipliedNN
+                Formula.EasyMultipliedNN,
+                Formula.EasyMultipliedNNxNN
             };
             easy = easy.OrderBy(x => Guid.NewGuid());
             var all = detachableCalculations.Take(2).Concat(easy.Take(2)).OrderBy(x => Guid.NewGuid()).ToArray();

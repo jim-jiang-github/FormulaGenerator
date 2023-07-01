@@ -44,6 +44,7 @@ namespace FormulaGenerator
         public static int Random_30_100 => random.Next(30, 100);
         public static int Random_30_80 => random.Next(30, 80);
         public static int Random_50_100 => random.Next(50, 100);
+        public static int Random_50_90 => random.Next(50, 91);
         public static int Random_50_500 => random.Next(50, 500);
         public static int Random_100_500 => random.Next(100, 500);
         public static int Random_100_300 => random.Next(100, 300);
@@ -189,16 +190,6 @@ namespace FormulaGenerator
                 var b4 = fs4[1];
                 Formula f7 = (Formula)125 * (Formula)a4 - (Formula)125 * (Formula)b4;
                 Formula f8 = (Formula)25 * (Formula)a4 - (Formula)25 * (Formula)b4;
-                var n = Random_50_100;
-
-                var fs5 = GetTwoFormulaPlus(Random_100x2_10);
-                var a5 = fs5[0];
-                var b5 = fs5[1];
-                Formula f9 = (Formula)n * (Formula)a5 + (Formula)n * (Formula)b5;
-                var fs6 = GetTwoFormulaMinus(Random_100x2_5);
-                var a6 = fs6[0];
-                var b6 = fs6[1];
-                Formula f10 = (Formula)n * (Formula)a6 - (Formula)n * (Formula)b6;
                 List<Formula> formulas = new List<Formula>();
 
                 formulas.Add(f1);
@@ -209,10 +200,42 @@ namespace FormulaGenerator
                 formulas.Add(f6);
                 formulas.Add(f7);
                 formulas.Add(f8);
+                formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
+                return formulas.First();
+            }
+        }
+
+        public static Formula EasyMultipliedNNxNN
+        {
+            get
+            {
+                var n = Random_50_100;
+                var fs5 = GetTwoFormulaPlus(Random_100x2_10);
+                var a5 = fs5[0];
+                var b5 = fs5[1];
+                Formula f9 = (Formula)n * (Formula)a5 + (Formula)n * (Formula)b5;
+                var fs6 = GetTwoFormulaMinus(Random_100x2_5);
+                var a6 = fs6[0];
+                var b6 = fs6[1];
+                Formula f10 = (Formula)n * (Formula)a6 - (Formula)n * (Formula)b6;
+                List<Formula> formulas = new List<Formula>();
                 formulas.Add(f9);
                 formulas.Add(f10);
                 formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
                 return formulas.First();
+            }
+        }
+
+        public static Formula EasyDivided
+        {
+            get
+            {
+                var c = Random_2_10;
+                var b = c * Random_2_10;
+                var a = b * 10;
+                Formula f1 = (Formula)c * (Formula)b;
+                Formula f2 = (Formula)a / (Formula)f1;
+                return f2;
             }
         }
 
@@ -357,7 +380,7 @@ namespace FormulaGenerator
             {
                 MathSymbol.Plus => $"({Formula1} + {Formula2})",
                 MathSymbol.Minus => $"({Formula1} - {Formula2})",
-                MathSymbol.Multiplied => $"{Formula1} × {Formula2}",
+                MathSymbol.Multiplied => $"({Formula1} × {Formula2})",
                 MathSymbol.Divided => $"{Formula1} ÷ {Formula2}",
                 _ => ToString()
             };
