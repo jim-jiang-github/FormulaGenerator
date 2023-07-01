@@ -89,7 +89,8 @@ namespace FormulaGenerator.Console
                 Formula.EasyMultipliedNNN,
                 Formula.EasyMultipliedNNNN,
                 Formula.EasyMultipliedNN,
-                Formula.EasyMultipliedNNxNN
+                Formula.EasyMultipliedNNxNN,
+                Formula.EasyDivided
             };
             easy = easy.OrderBy(x => Guid.NewGuid());
             var all = detachableCalculations.Take(2).Concat(easy.Take(2)).OrderBy(x => Guid.NewGuid()).ToArray();

@@ -285,18 +285,42 @@ namespace FormulaGenerator
             get
             {
                 var n1 = 8 * Random_3_9;
-                Formula f1 = (Formula)125 * (Formula)n1 * (Formula)Random_3_10;
-                Formula f2 = (Formula)25 * (Formula)n1 * (Formula)Random_3_10;
-                var n2 = 4 * Random_3_9;
-                Formula f3 = (Formula)25 * (Formula)n2 * (Formula)Random_3_10;
-                Formula f4 = (Formula)125 * (Formula)n1 * (Formula)Random_3_10;
                 List<Formula> formulas = new List<Formula>();
-                formulas.Add(f1);
-                formulas.Add(f2);
-                formulas.Add(f3);
-                formulas.Add(f4);
+                formulas.Add((Formula)125);
+                formulas.Add((Formula)n1);
+                formulas.Add((Formula)Random_3_10);
                 formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
-                return formulas.First();
+                Formula f1 = formulas.Aggregate((x1, x2) => (Formula)x1 * (Formula)x2);
+
+                formulas.Clear();
+                formulas.Add((Formula)25);
+                formulas.Add((Formula)n1);
+                formulas.Add((Formula)Random_3_10);
+                formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
+                Formula f2 = formulas.Aggregate((x1, x2) => (Formula)x1 * (Formula)x2);
+
+                var n2 = 4 * Random_3_9;
+                formulas.Clear();
+                formulas.Add((Formula)25);
+                formulas.Add((Formula)n2);
+                formulas.Add((Formula)Random_3_10);
+                formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
+                Formula f3 = formulas.Aggregate((x1, x2) => (Formula)x1 * (Formula)x2);
+
+                formulas.Clear();
+                formulas.Add((Formula)125);
+                formulas.Add((Formula)n2);
+                formulas.Add((Formula)Random_3_10);
+                formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
+                Formula f4 = formulas.Aggregate((x1, x2) => (Formula)x1 * (Formula)x2);
+
+                List<Formula> formulas1 = new List<Formula>();
+                formulas1.Add(f1);
+                formulas1.Add(f2);
+                formulas1.Add(f3);
+                formulas1.Add(f4);
+                formulas1 = formulas1.OrderBy(x => Guid.NewGuid()).ToList();
+                return formulas1.First();
             }
         }
 
@@ -397,7 +421,7 @@ namespace FormulaGenerator
             {
                 MathSymbol.Plus => $"{Formula1} + {Formula2}",
                 MathSymbol.Minus => $"{Formula1} - {Formula2}",
-                MathSymbol.Multiplied => $"{Formula1.WithBrackets()} × {Formula2.WithBrackets()}",
+                MathSymbol.Multiplied => $"{Formula1} × {Formula2.WithBrackets()}",
                 MathSymbol.Divided => $"{Formula1.WithBrackets()} ÷ {Formula2.WithBrackets()}",
                 _ => ToString()
             };
