@@ -18,29 +18,41 @@ namespace FormulaGenerator
         }
 
         private static Random random = new Random();
+        public static int Random_100x1_2 => random.Next(1, 2) * 100;
         public static int Random_100x1_5 => random.Next(1, 5) * 100;
         public static int Random_100x3_6 => random.Next(3, 6) * 100;
         public static int Random_100x1_9 => random.Next(1, 10) * 100;
+        public static int Random_100x2_5 => random.Next(2, 6) * 100;
+        public static int Random_100x2_10 => random.Next(2, 11) * 100;
+        public static int Random_8x2_9 => random.Next(2, 10) * 8;
+        public static int Random_4x2_9 => random.Next(2, 10) * 4;
+        public static int Random_0_2 => random.Next(0, 2);
         public static int Random_1_3 => random.Next(1, 3);
         public static int Random_2_4 => random.Next(2, 4);
         public static int Random_2_5 => random.Next(2, 5);
         public static int Random_2_8 => random.Next(2, 8);
         public static int Random_2_10 => random.Next(2, 10);
+        public static int Random_3_9 => random.Next(3, 9);
         public static int Random_3_10 => random.Next(3, 10);
         public static int Random_4_9 => random.Next(4, 9);
         public static int Random_10_30 => random.Next(10, 30);
         public static int Random_10_100 => random.Next(10, 100);
+        public static int Random_10_20 => random.Next(10, 20);
         public static int Random_10_50 => random.Next(10, 50);
+        public static int Random_20_60 => random.Next(20, 60);
+        public static int Random_20_100 => random.Next(20, 100);
         public static int Random_30_100 => random.Next(30, 100);
         public static int Random_30_80 => random.Next(30, 80);
         public static int Random_50_100 => random.Next(50, 100);
         public static int Random_50_500 => random.Next(50, 500);
         public static int Random_100_500 => random.Next(100, 500);
+        public static int Random_100_300 => random.Next(100, 300);
         public static int Random_100_1000 => random.Next(100, 1000);
         public static int Random_200_300 => random.Next(200, 300);
         public static int Random_300_600 => random.Next(300, 600);
         public static int Random_300_1000 => random.Next(300, 1000);
         public static decimal RandomFloat_0_10 => (random.Next(10, 100) / (decimal)10);
+        public static decimal RandomFloat_2_50 => (random.Next(20, 500) / (decimal)10);
         public static decimal RandomFloat_3_10 => (random.Next(30, 100) / (decimal)10);
         public static decimal RandomFloat_10_100 => (random.Next(100, 1000) / (decimal)10);
         public static decimal RandomFloat_30_100 => (random.Next(300, 1000) / (decimal)10);
@@ -77,11 +89,27 @@ namespace FormulaGenerator
         public static Formula DividedDot => GetDivided(Random_3_10, RandomFloat_3_10);
 
         public static Formula Divided99 => GetDivided(Random_10_30, Random_10_30);
-        public static Formula DividedDot99 => GetDividedInt(() => Random_10_30, () => RandomFloat_3_10);
+        public static Formula DividedDot99 => GetDividedInt(() => Random_20_100, () => RandomFloat_2_50);
         public static Formula Multiplied99 => (Formula)Random_30_100 * (Formula)Random_30_100;
         public static Formula Multiplied999 => (Formula)Random_100_500 * (Formula)Random_30_100;
         //public static Formula Multiplied500 => (Formula)Random_50_500 * (Formula)Random_50_500;
         //public static Formula Divided500 => GetDivided(Random_30_100, RandomFloat_3_10);
+
+        public static Formula GetDividedInt(Func<int> divF, Func<decimal> vF)
+        {
+            int div = divF.Invoke();
+            decimal v = vF.Invoke();
+            while (div * v % 1 != 0 || div * v > 999 || div * v <= 210)
+            {
+                div = divF.Invoke();
+                v = vF.Invoke();
+            }
+            return GetDivided(div, v);
+        }
+        public static Formula GetDivided(int div, decimal v)
+        {
+            return (Formula)(div * v) / (Formula)div;
+        }
 
         public static Formula EasyPlusNNN
         {
@@ -93,7 +121,19 @@ namespace FormulaGenerator
                 formulas.Add((Formula)x);
                 formulas.Add((Formula)(Random_100x1_5 - x));
                 formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
-                var formula = formulas.Aggregate((x1, x2) => (Formula)x1 + x2);
+                var flag = Random_0_2;
+                int i = 0;
+                var formula = formulas.Aggregate((x1, x2) =>
+                {
+                    if (i++ == flag)
+                    {
+                        return (Formula)x1 - (Formula)Random_10_100 + x2;
+                    }
+                    else
+                    {
+                        return (Formula)x1 + x2;
+                    }
+                });
                 return formula;
             }
         }
@@ -102,9 +142,25 @@ namespace FormulaGenerator
         {
             get
             {
-                var n = Random_100x1_5;
+                var n = Random_100x1_2;
                 var x = Random_10_100;
-                return (Formula)(Random_10_100 + n) - (Formula)x - (Formula)(n - x);
+                Formula f1 = (Formula)(Random_100_300 + n) + (Formula)Random_10_100 - (Formula)x - (Formula)(n - x);
+                Formula f2 = (Formula)(Random_100_300 + n) - (Formula)x + (Formula)Random_10_100 - (Formula)(n - x);
+                Formula f3 = (Formula)(Random_100_300 + n) - (Formula)x - (Formula)(n - x) + (Formula)Random_10_100;
+                Formula f4 = (Formula)(Random_100_300 + n) - (Formula)Random_10_100 - (Formula)x - (Formula)(n - x);
+                Formula f5 = (Formula)(Random_100_300 + n) - (Formula)x - (Formula)Random_10_100 - (Formula)(n - x);
+                Formula f6 = (Formula)(Random_100_300 + n) - (Formula)x - (Formula)(n - x) - (Formula)Random_10_100;
+                List<Formula> formulas = new List<Formula>();
+
+                formulas.Add(f1);
+                formulas.Add(f2);
+                formulas.Add(f3);
+                formulas.Add(f4);
+                formulas.Add(f5);
+                formulas.Add(f6);
+
+                formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
+                return formulas.First();
             }
         }
 
@@ -112,29 +168,37 @@ namespace FormulaGenerator
         {
             get
             {
-                var a1 = Random_2_8;
-                var b1 = 8 - a1;
+                var fs1 = GetTwoFormulaPlus(Random_8x2_9);
+                var a1 = fs1[0];
+                var b1 = fs1[1];
                 Formula f1 = (Formula)125 * (Formula)a1 + (Formula)125 * (Formula)b1;
                 Formula f2 = (Formula)25 * (Formula)a1 + (Formula)25 * (Formula)b1;
-                var a2 = Random_1_3;
-                var b2 = 4 - a2;
+                var fs2 = GetTwoFormulaPlus(Random_4x2_9);
+                var a2 = fs1[0];
+                var b2 = fs1[1];
                 Formula f3 = (Formula)125 * (Formula)a2 + (Formula)125 * (Formula)b2;
                 Formula f4 = (Formula)25 * (Formula)a2 + (Formula)25 * (Formula)b2;
 
-                var b3 = Random_2_8;
-                var a3 = 8 + b3;
+                var fs3 = GetTwoFormulaPlus(Random_8x2_9);
+                var a3 = fs3[0];
+                var b3 = fs3[1];
                 Formula f5 = (Formula)125 * (Formula)a3 - (Formula)125 * (Formula)b3;
                 Formula f6 = (Formula)25 * (Formula)a3 - (Formula)25 * (Formula)b3;
-                var b4 = Random_1_3;
-                var a4 = 4 + b4;
+                var fs4 = GetTwoFormulaPlus(Random_4x2_9);
+                var a4 = fs4[0];
+                var b4 = fs4[1];
                 Formula f7 = (Formula)125 * (Formula)a4 - (Formula)125 * (Formula)b4;
                 Formula f8 = (Formula)25 * (Formula)a4 - (Formula)25 * (Formula)b4;
                 var n = Random_50_100;
-                var a5 = Random_30_80;
-                var b5 = 100 - a5;
-                var c5 = 100 + b5;
+
+                var fs5 = GetTwoFormulaPlus(Random_100x2_10);
+                var a5 = fs5[0];
+                var b5 = fs5[1];
                 Formula f9 = (Formula)n * (Formula)a5 + (Formula)n * (Formula)b5;
-                Formula f10 = (Formula)n * (Formula)c5 - (Formula)n * (Formula)b5;
+                var fs6 = GetTwoFormulaMinus(Random_100x2_5);
+                var a6 = fs6[0];
+                var b6 = fs6[1];
+                Formula f10 = (Formula)n * (Formula)a6 - (Formula)n * (Formula)b6;
                 List<Formula> formulas = new List<Formula>();
 
                 formulas.Add(f1);
@@ -150,6 +214,20 @@ namespace FormulaGenerator
                 formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
                 return formulas.First();
             }
+        }
+
+        public static Formula[] GetTwoFormulaPlus(int value)
+        {
+            var v1 = random.Next(value / 4, value * 3 / 4);
+            var v2 = value - v1;
+            return new[] { (Formula)v1, (Formula)v2 };
+        }
+
+        public static Formula[] GetTwoFormulaMinus(int value)
+        {
+            var v2 = random.Next(value / 4, value * 3 / 4);
+            var v1 = value + v2;
+            return new[] { (Formula)v1, (Formula)v2 };
         }
 
         public static Formula EasyMultipliedNNNN
@@ -183,10 +261,10 @@ namespace FormulaGenerator
         {
             get
             {
-                var n1 = 8 * Random_2_5;
+                var n1 = 8 * Random_3_9;
                 Formula f1 = (Formula)125 * (Formula)n1 * (Formula)Random_3_10;
                 Formula f2 = (Formula)25 * (Formula)n1 * (Formula)Random_3_10;
-                var n2 = 4 * Random_2_5;
+                var n2 = 4 * Random_3_9;
                 Formula f3 = (Formula)25 * (Formula)n2 * (Formula)Random_3_10;
                 Formula f4 = (Formula)125 * (Formula)n1 * (Formula)Random_3_10;
                 List<Formula> formulas = new List<Formula>();
@@ -197,22 +275,6 @@ namespace FormulaGenerator
                 formulas = formulas.OrderBy(x => Guid.NewGuid()).ToList();
                 return formulas.First();
             }
-        }
-
-        public static Formula GetDividedInt(Func<int> divF, Func<decimal> vF)
-        {
-            int div = divF.Invoke();
-            decimal v = vF.Invoke();
-            while (div * v % 1 != 0)
-            {
-                div = divF.Invoke();
-                v = vF.Invoke();
-            }
-            return GetDivided(div, v);
-        }
-        public static Formula GetDivided(int div, decimal v)
-        {
-            return (Formula)(div * v) / (Formula)div;
         }
 
         public static Formula SimpleRandomMathSymbol(Formula formula1, Formula formula2)

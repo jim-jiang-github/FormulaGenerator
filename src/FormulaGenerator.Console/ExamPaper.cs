@@ -24,6 +24,7 @@ namespace FormulaGenerator.Console
 
             graphics.DrawString("一· 口算：", fontTitle, Brushes.Black, 0, 20);
 
+            //Formula[] oralCalculations = Enumerable.Range(0, 60).Select(x => Formula.EasyMultipliedNNN).ToArray();
             Formula[] oralCalculations = new Formula[] {
                 Formula.PlusDot99,
                 Formula.MinusDot99,
