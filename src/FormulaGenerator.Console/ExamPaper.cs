@@ -104,11 +104,10 @@ namespace FormulaGenerator.Console
 
             if (isShowAnswer)
             {
-                var answer1 = string.Join("|", oralCalculations.Take(5).Select(x => x.FormulaResult.ToString()));
-                var answer1_ = string.Join("|", oralCalculations.Skip(5).Take(5).Select(x => x.FormulaResult.ToString()));
+                var answer1 = string.Join("|", oralCalculations.Take(10).Select(x => x.FormulaResult.ToString()));
                 var answer2 = string.Join("|", verticalCalculations.Select(x => x.FormulaResult.ToString()));
-                var answer3 = string.Join("|", detachableCalculations.Select(x => x.FormulaResult.ToString()));
-                graphics.DrawString($" 口算1-5:[{answer1}]\r\n 口算6-10:[{answer1_}]\r\n 竖式计算:[{answer2}]\r\n 脱式计算:[{answer3}]", fontText, Brushes.Black, 50, a4.Height - 140);
+                var answer3 = string.Join("|", all.Select(x => x.FormulaResult.ToString()));
+                graphics.DrawString($" 口算:[{answer1}]\r\n 竖式计算:[{answer2}]\r\n 脱式计算:[{answer3}]", fontText, Brushes.Black, 50, a4.Height - 180);
             }
             a4.Save(path);
         }

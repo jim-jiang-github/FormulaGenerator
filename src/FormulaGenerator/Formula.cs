@@ -353,9 +353,8 @@ namespace FormulaGenerator
                 {
                     var r1 = Formula1.FormulaResult;
                     var r2 = Formula2.FormulaResult;
-                    var value = (int)(r1 / r2);
-                    var remainder = (int)r1 - value * (int)r2;
-                    return value + (decimal)remainder / 10;
+                    var value = r1 / r2;
+                    return value;
                 }
                 return Symbol switch
                 {
